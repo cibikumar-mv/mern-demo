@@ -15,7 +15,7 @@ const App = () => {
 
   useEffect(() => {
     dispatch(getPosts());
-  }, [currentId,dispatch]);
+  }, [currentId, dispatch]);
 
   return (
     <Container>
@@ -33,6 +33,7 @@ const App = () => {
       <Grow in>
         <Container>
           <Grid
+            className={classes.mainContainer}
             container
             justifyContent="space-between"
             alignItems="stretch"
