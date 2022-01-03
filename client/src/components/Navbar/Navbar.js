@@ -1,26 +1,26 @@
 import React, { useState, useEffect } from "react";
 import { AppBar, Typography, Toolbar, Avatar, Button } from "@material-ui/core";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import decode from "jwt-decode";
-
 import useStyles from "./Styles";
 import moments from "../../images/moments.png";
+import { LOGOUT } from "../../constants/actionTypes";
 
 const Navbar = () => {
   const [user, setUser] = useState(JSON.parse(localStorage.getItem("profile")));
   const dispatch = useDispatch();
   const location = useLocation();
-  // const history = useHistory();
+  const navigate = useNavigate();
   const classes = useStyles();
 
-  // const logout = () => {
-  //   dispatch({ type: actionType.LOGOUT });
+  const logout = () => {
+    dispatch({ type: LOGOUT });
 
-  //   history.push("/auth");
+    navigate("/auth");
 
-  //   setUser(null);
-  // };
+    setUser(null);
+  };
 
   useEffect(() => {
     const token = user?.token;
@@ -28,11 +28,11 @@ const Navbar = () => {
     if (token) {
       const decodedToken = decode(token);
 
-      // if (decodedToken.exp * 1000 < new Date().getTime()) logout();
+      if (decodedToken.exp * 1000 < new Date().getTime()) logout();
     }
 
     setUser(JSON.parse(localStorage.getItem("profile")));
-  }, []);
+  }, [location]);
 
   return (
     <AppBar className={classes.appBar} position="static" color="inherit">
@@ -70,7 +70,7 @@ const Navbar = () => {
               variant="contained"
               className={classes.logout}
               color="secondary"
-              //   onClick={logout}
+                onClick={logout}
             >
               Logout
             </Button>
